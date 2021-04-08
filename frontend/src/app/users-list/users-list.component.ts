@@ -66,19 +66,9 @@ export class UsersListComponent implements AfterViewInit {
   }
 
   public openUpdateDialog(user: User) {
-    const dialogRef = this.dialog.open(UpdateUserDialogComponent, {
+    this.dialog.open(UpdateUserDialogComponent, {
       width: '300px',
       data: user,
     });
-
-    dialogRef
-      .afterClosed()
-      .pipe(
-        filter((result) => !!result),
-        switchMap((user: User) => this.apiService.updateUser(user))
-      )
-      .subscribe({
-        next: () => this.refreshService.hasChangesSubject$.next(),
-      });
   }
 }

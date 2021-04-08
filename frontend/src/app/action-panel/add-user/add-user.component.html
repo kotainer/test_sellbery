@@ -34,6 +34,9 @@
       <mat-error *ngIf="form.get('email').hasError('required')">
         Email is <strong>required</strong>
       </mat-error>
+      <mat-error *ngIf="form.get('email').hasError('duplicate')">
+        Email <strong>already taken</strong>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width form-field ">
