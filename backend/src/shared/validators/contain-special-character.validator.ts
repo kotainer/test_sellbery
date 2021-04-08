@@ -7,7 +7,7 @@ export class ContainsSpecialCharacter implements ValidatorConstraintInterface {
       return false;
     }
 
-    return !!text.toString().match(/[^a-zA-Z0-9\-'_]/);
+    return !!text.toString().match(/[^a-zA-Zа-яА-Я0-9\-'_]/);
   }
 
   public defaultMessage() {

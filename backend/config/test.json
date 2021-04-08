@@ -1,5 +1,6 @@
 {
     "appPort": 3000,
+    "apiVersion": "v1",
     "db": {
         "name": "sellberry__test",
         "host": "localhost"

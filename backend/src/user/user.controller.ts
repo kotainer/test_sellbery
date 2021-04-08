@@ -1,7 +1,8 @@
-import { Controller, Get, Res, HttpStatus, Post, Body, Param, ParseUUIDPipe, Put } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Post, Body, Param, ParseUUIDPipe, Put, Query } from '@nestjs/common';
 import { ValidationPipe } from 'src/shared/pipes/validation.pipe';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { ListQuery } from './interfaces/list-query.type';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -9,8 +10,8 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  async getUsers(@Res() res) {
-    const users = await this.userService.getUsers();
+  async getUsers(@Res() res, @Query() query: ListQuery) {
+    const users = await this.userService.getUsers(query);
 
     return res.status(HttpStatus.OK).json(users);
   }
