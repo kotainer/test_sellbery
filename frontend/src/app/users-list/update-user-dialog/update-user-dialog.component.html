@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Add new user</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="full-width form-field ">
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="name"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width form-field ">
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        [errorStateMatcher]="matcher"
+        placeholder="mail@example.com"
+      />
+      <mat-error
+        *ngIf="
+          form.get('email').hasError('email') &&
+          !form.get('email').hasError('required')
+        "
+      >
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="form.get('email').hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width form-field ">
+      <mat-label>Password</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="password"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error *ngIf="form.get('password').hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('password').hasError('specialCharacter')">
+        Password must contain a <strong>special character</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('password').hasError('minlength')">
+        Password must contain not less than <strong>5 symbols</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" cdkFocusInitial [disabled]="form.invalid">
+    Update
+  </button>
+  <button mat-button (click)="close()">Cancel</button>
+</div>

@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { AddUserComponent } from './action-panel/add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UpdateUserDialogComponent } from './users-list/update-user-dialog/update-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UsersListComponent,
     ActionPanelComponent,
     AddUserComponent,
+    UpdateUserDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

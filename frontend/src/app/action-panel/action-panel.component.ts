@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { filter, switchMap } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { ApiService } from '../services/api.service';
+import { RefreshService } from '../services/refresh.service';
 import { AddUserComponent } from './add-user/add-user.component';
 
 @Component({
@@ -13,7 +14,8 @@ import { AddUserComponent } from './add-user/add-user.component';
 export class ActionPanelComponent {
   constructor(
     private readonly dialog: MatDialog,
-    private readonly apiService: ApiService
+    private readonly apiService: ApiService,
+    private readonly refreshService: RefreshService
   ) {}
 
   public openAddDialog() {
@@ -27,6 +29,8 @@ export class ActionPanelComponent {
         filter((result) => !!result),
         switchMap((user: User) => this.apiService.addUser(user))
       )
-      .subscribe();
+      .subscribe({
+        next: () => this.refreshService.hasChangesSubject$.next(),
+      });
   }
 }

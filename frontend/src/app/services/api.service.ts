@@ -28,4 +28,8 @@ export class ApiService {
   public addUser(user: User) {
     return this.httpClient.post<User>(`${this.baseApi}/user`, user);
   }
+
+  public updateUser(user: User) {
+    return this.httpClient.put<User>(`${this.baseApi}/user/${user._id}`, user);
+  }
 }

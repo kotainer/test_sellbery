@@ -1,10 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { ApiService } from '../services/api.service';
+import { RefreshService } from '../services/refresh.service';
+import { UpdateUserDialogComponent } from './update-user-dialog/update-user-dialog.component';
 
 @Component({
   selector: 'app-users-list',
@@ -12,7 +15,7 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./users-list.component.less'],
 })
 export class UsersListComponent implements AfterViewInit {
-  public displayedColumns: string[] = ['name', 'email'];
+  public displayedColumns: string[] = ['name', 'email', 'actions'];
   public filteredAndPagedIssues: Observable<User[]> = new Observable();
 
   public resultsLength = 0;
@@ -21,12 +24,17 @@ export class UsersListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) public paginator: MatPaginator;
   @ViewChild(MatSort) public sort: MatSort;
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly apiService: ApiService,
+    private readonly refreshService: RefreshService
+  ) {}
 
   public ngAfterViewInit() {
     this.filteredAndPagedIssues = merge(
       this.sort.sortChange,
-      this.paginator.page
+      this.paginator.page,
+      this.refreshService.hasChangesSubject$
     ).pipe(
       startWith({}),
       switchMap(() => {
@@ -55,5 +63,22 @@ export class UsersListComponent implements AfterViewInit {
 
   public resetPaging(): void {
     this.paginator.pageIndex = 0;
+  }
+
+  public openUpdateDialog(user: User) {
+    const dialogRef = this.dialog.open(UpdateUserDialogComponent, {
+      width: '300px',
+      data: user,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result) => !!result),
+        switchMap((user: User) => this.apiService.updateUser(user))
+      )
+      .subscribe({
+        next: () => this.refreshService.hasChangesSubject$.next(),
+      });
   }
 }
