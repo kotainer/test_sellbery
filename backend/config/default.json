@@ -1,0 +1,7 @@
+{
+    "appPort": 3000,
+    "db": {
+        "name": "sellberry",
+        "host": "localhost"
+    }
+}
